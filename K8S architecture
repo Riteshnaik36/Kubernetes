@@ -21,6 +21,6 @@ b. controller Manager
           - Job controller: Watches for jobs (one-time tasks) and creates Pods to complete them.
           - EndpointSlice controller: Manages EndpointSlice objects, linking Services and Pods.
           - ServiceAccount controller: Creates default ServiceAccounts when new namespaces are created.
-
+ 
 
 
