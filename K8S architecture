@@ -1,0 +1,26 @@
+Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized applications
+Architecture Desgin
+Control panel or also called as Master Node: 
+-----------------------------------------------
+The Master Node is the central part of a Kubernetes cluster, responsible for managing the cluster's operations and controlling everything. 
+It includes several important components.
+
+  a. API Server
+  ---------------------
+          The API Server is the main point where all administrative tasks are handled and acts as the central control for the entire cluster. 
+          It provides the Kubernetes API, which allows users and other parts of the system to communicate with and manage the cluster.
+
+
+ 
+b. controller Manager
+  ---------------------
+          The Controller Manager makes sure the cluster is in the desired state by ensuring that the actual setup matches the intended configuration. 
+          Even though each controller works as a separate process, they are combined into one program to make things simpler.
+          There are many types of controllers. Some examples include:
+          - Node controller: Detects when nodes go down and takes action.
+          - Job controller: Watches for jobs (one-time tasks) and creates Pods to complete them.
+          - EndpointSlice controller: Manages EndpointSlice objects, linking Services and Pods.
+          - ServiceAccount controller: Creates default ServiceAccounts when new namespaces are created.
+
+
+
