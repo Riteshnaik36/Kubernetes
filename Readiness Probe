@@ -1,3 +1,10 @@
+Readiness probe -  -  from offical document -  -  https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/ 
+Readiness probes determine when a container is ready to start accepting traffic. 
+This is useful when waiting for an application to perform time-consuming initial tasks, such as establishing network connections, loading files, and warming caches.
+If the readiness probe returns a failed state, Kubernetes removes the pod from all matching service endpoints.
+Readiness probes run on the container during its whole lifecycle
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 what is readiness probe? 
 A Readiness Probe in Kubernetes is used to check if a container is ready to handle traffic. 
 It helps Kubernetes know when a container has finished starting up and is fully prepared to serve requests.
