@@ -1,7 +1,7 @@
 Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerized applications
 Architecture Desgin
 Control panel or also called as Master Node: 
------------------------------------------------
+------------------------------------------------
 The Master Node is the central part of a Kubernetes cluster, responsible for managing the cluster's operations and controlling everything. 
 It includes several important components.
 
