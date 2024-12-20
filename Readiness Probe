@@ -3,11 +3,25 @@ A Readiness Probe in Kubernetes is used to check if a container is ready to hand
 
 If the readiness probe fails, Kubernetes will stop sending traffic to that container until the probe succeeds, ensuring that only healthy and ready containers handle requests. 
 This prevents users from getting errors or bad responses while the application is still initializing or not fully ready.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Purpose of Readiness Probes:
+---------------------------------
+Traffic Management: 
+         Readiness probes are used to manage traffic routing to containers. 
+         If a container is not yet ready to serve traffic (for example, during startup or when it’s in a transient state), Kubernetes will not send requests to it.
+Graceful Initialization: 
+         Helps ensure that your application is not overwhelmed by requests while it's still starting up or in a transitional state.
+Avoiding Request Failures: 
+         Prevents Kubernetes from sending traffic to containers that are not ready, reducing the risk of failures due to unready application states.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+How Readiness Probes Work:
+A readiness probe checks whether the application inside the container is ready to handle requests. It performs periodic checks using one of the following methods:
 
-
-
+HTTP Check: The probe sends an HTTP request to a specific URL and expects a valid response (usually 200 OK).
+TCP Socket Check: The probe attempts to open a TCP connection to a specified port on the container.
+Command Check: The probe runs a command inside the container and expects a successful exit status (0).
 
 
 
