@@ -1,0 +1,27 @@
+Readiness and liveness probes in Kubernetes can use similar parameters, but they serve different purposes and are typically configured differently.
+
+Common Parameters:
+-------------------------------
+Both probes can use the following parameters:
+    httpGet: To perform an HTTP request to check the container's health.
+    tcpSocket: To check if a TCP connection can be established.
+    exec: To run a command inside the container and check its result.
+
+
+Key Differences:
+-------------------------------
+Purpose:
+    Readiness Probe: Checks if the container is ready to handle traffic (e.g., fully started or has loaded dependencies).
+    Liveness Probe: Checks if the container is still running and healthy (e.g., if the app is stuck or has crashed).
+Failure Behavior:
+    Readiness Probe: If it fails, Kubernetes stops sending traffic to the container, but the container will not be restarted.
+    Liveness Probe: If it fails, Kubernetes will attempt to restart the container to recover from an unhealthy state.
+Configuration Differences:
+    InitialDelaySeconds: The time to wait before starting the first probe. It may differ between readiness and liveness probes, as readiness probes might need more time to ensure the application is ready, while liveness probes usually start after a shorter delay.
+    PeriodSeconds: The frequency of probe checks might also be set differently depending on whether you want more frequent checks for readiness or liveness.
+
+
+In Summary:
+-------------------------------
+While they can use the same types of checks (HTTP, TCP, or exec), readiness and liveness probes are often configured with different parameters and serve distinct roles in maintaining the health of your application.
+
