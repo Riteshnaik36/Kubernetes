@@ -18,55 +18,73 @@ Avoiding Request Failures:
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 How Readiness Probes Work:
+---------------------------------
 A readiness probe checks whether the application inside the container is ready to handle requests. It performs periodic checks using one of the following methods:
-
-HTTP Check: The probe sends an HTTP request to a specific URL and expects a valid response (usually 200 OK).
-TCP Socket Check: The probe attempts to open a TCP connection to a specified port on the container.
-Command Check: The probe runs a command inside the container and expects a successful exit status (0).
-
+         HTTP Check: The probe sends an HTTP request to a specific URL and expects a valid response (usually 200 OK).
+         TCP Socket Check: The probe attempts to open a TCP connection to a specified port on the container.
+         Command Check: The probe runs a command inside the container and expects a successful exit status (0).
 
 
+Key Parameters for Readiness Probe:
+---------------------------------
+httpGet (for HTTP checks):
+         path: The URL path to check within the container.
+         port: The port to access inside the container.
+         scheme: Can be HTTP or HTTPS, depending on the application.
+         tcpSocket (for TCP socket checks):
+port: The port on which to check if the container is accepting connections.
+exec (for command checks):
+         command: The command to run inside the container. If the command returns an exit status of 0, the container is considered ready.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Readiness Probe Parameters:
+- initialDelaySeconds: The number of seconds to wait before performing the first probe. Useful for applications with a long initialization time.
+- periodSeconds: The frequency (in seconds) at which to perform the readiness check.
+- timeoutSeconds: The number of seconds to wait for the probe to respond. If the probe doesn’t respond within this time, it’s considered a failure.
+- failureThreshold: The number of consecutive failures required before the container is marked as not ready.
+- successThreshold: The number of consecutive successes required before the container is marked as ready again (used mostly in liveness probes as well).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Example of Readiness Probe in a Pod Spec:
+Here’s an example of a Readiness Probe in a Kubernetes Pod configuration:
+---------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  containers:
+    - name: my-container
+      image: my-image:latest
+      readinessProbe:
+        httpGet:
+          path: /readiness
+          port: 8080
+        initialDelaySeconds: 10   # Wait for 10 seconds before the first probe
+        periodSeconds: 5          # Probe every 5 seconds
+        timeoutSeconds: 3         # Timeout after 3 seconds
+        failureThreshold: 3       # Mark as not ready after 3 consecutive failures
+        successThreshold: 1       # Only need 1 success to be considered ready again
 
+Key Components of the Example:
+---------------------------------
+- - readinessProbe: This section defines the readiness check for the container.
+- - httpGet: Kubernetes will send an HTTP GET request to the /readiness endpoint on port 8080 to check if the application is ready.
+- - initialDelaySeconds: 10: This tells Kubernetes to wait for 10 seconds after the container starts before performing the first readiness check. 
+                             This allows time for the application to initialize before being probed.
+- - periodSeconds: 5: Kubernetes will check the readiness of the container every 5 seconds after the initial delay.
+- - timeoutSeconds: 3: If the probe does not get a response in 3 seconds, it will fail.
+- - failureThreshold: 3: If the probe fails 3 consecutive times, the container will be marked as "not ready," and traffic will no longer be sent to it.
+- - successThreshold: 1: If the probe succeeds once, the container will be considered ready again.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Benefits of Readiness Probes:
+---------------------------------
+- - Graceful Traffic Routing: Only containers that are truly ready to handle traffic will receive requests, preventing failed connections or errors.
+- - Better Scaling: Readiness probes help to ensure that new Pods only start receiving traffic after they are fully initialized. 
+                This avoids situations where Pods are added to the service pool before they are ready to handle user requests.
+- - Improved User Experience: By preventing traffic from being routed to unready containers, the system can maintain a stable and responsive user experience.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Liveness vs. Readiness Probes:
 --------------------------------
